@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vinay Aalla | Full Stack Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --bg2: #161b22;
+      --bg3: #21262d;
+      --accent: #7c3aed;
+      --accent2: #06b6d4;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --border: #30363d;
+      --card: #161b22;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(13,17,23,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 60px;
+    }
+    .nav-logo {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.2rem; font-weight: 600;
+      color: var(--accent);
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.9rem;
+      transition: color .3s;
+    }
+    .nav-links a:hover { color: var(--accent2); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 80px 2rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-greeting {
+      font-family: 'Fira Code', monospace;
+      color: var(--accent2); font-size: 1rem; margin-bottom: 1rem;
+      letter-spacing: 2px;
+    }
+    .hero-name {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800; line-height: 1.1;
+      background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-role {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--muted); margin-top: 1rem;
+      font-weight: 300;
+    }
+    .hero-role span { color: var(--accent2); font-weight: 600; }
+    .hero-tagline {
+      margin-top: 1.5rem; font-size: 1rem; color: var(--muted);
+      max-width: 520px;
+    }
+    .hero-cta {
+      margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      padding: .75rem 2rem; border-radius: 8px;
+      font-size: .95rem; font-weight: 600; cursor: pointer;
+      text-decoration: none; transition: all .3s; display: inline-block;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff; border: 2px solid var(--accent);
+    }
+    .btn-primary:hover { background: transparent; color: var(--accent); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 2px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    .scroll-indicator {
+      position: absolute; bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      color: var(--muted); font-size: 1.4rem;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .section-title span { color: var(--accent); }
+    .section-line {
+      width: 60px; height: 4px; background: var(--accent);
+      border-radius: 2px; margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+      align-items: center;
+    }
+    .about-img-wrapper {
+      display: flex; justify-content: center;
+    }
+    .about-avatar {
+      width: 220px; height: 220px; border-radius: 50%;
+      border: 4px solid var(--accent);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+      box-shadow: 0 0 40px rgba(124,58,237,.3);
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; }
+    .about-bullets { list-style: none; margin-top: 1.5rem; }
+    .about-bullets li {
+      display: flex; align-items: center; gap: .75rem;
+      color: var(--muted); margin-bottom: .6rem; font-size: .95rem;
+    }
+    .about-bullets li i { color: var(--accent2); width: 18px; }
+
+    /* ── TECH STACK ── */
+    #skills { background: var(--bg2); max-width: 100%; }
+    #skills > * { max-width: 1100px; margin-left: auto; margin-right: auto; }
+    .skills-inner { max-width: 1100px; margin: 0 auto; }
+    .tech-category { margin-bottom: 2.5rem; }
+    .tech-category h3 {
+      font-size: .9rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent2); margin-bottom: 1.2rem;
+    }
+    .tech-badges { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .badge {
+      display: flex; align-items: center; gap: .5rem;
+      padding: .5rem 1rem; border-radius: 6px;
+      font-size: .85rem; font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      transition: transform .2s, border-color .2s;
+    }
+    .badge:hover { transform: translateY(-2px); border-color: var(--accent2); }
+    .badge i { font-size: 1rem; }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+    }
+    .project-card:hover {
+      transform: translateY(-6px); border-color: var(--accent);
+      box-shadow: 0 12px 40px rgba(124,58,237,.15);
+    }
+    .project-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .project-card h3 { font-size: 1.1rem; margin-bottom: .5rem; }
+    .project-card p { color: var(--muted); font-size: .9rem; margin-bottom: 1.2rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .tag {
+      font-size: .75rem; padding: .25rem .6rem;
+      border-radius: 20px; background: rgba(124,58,237,.15);
+      color: var(--accent); border: 1px solid rgba(124,58,237,.3);
+    }
+    .project-links { margin-top: 1rem; display: flex; gap: 1rem; }
+    .project-links a {
+      color: var(--muted); font-size: .85rem; text-decoration: none;
+      display: flex; align-items: center; gap: .3rem;
+      transition: color .2s;
+    }
+    .project-links a:hover { color: var(--accent2); }
+
+    /* ── SOCIAL / CONNECT ── */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .social-card {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; text-decoration: none; color: var(--text);
+      transition: transform .3s, border-color .3s;
+    }
+    .social-card:hover { transform: translateY(-4px); }
+    .social-card .s-icon {
+      width: 42px; height: 42px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .social-card .s-info small { color: var(--muted); font-size: .75rem; display: block; }
+    .social-card .s-info strong { font-size: .9rem; }
+
+    .ig   { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color:#fff; }
+    .fb   { background: #1877F2; color: #fff; }
+    .tw   { background: #1DA1F2; color: #fff; }
+    .rd   { background: #FF4500; color: #fff; }
+    .li   { background: #0077B5; color: #fff; }
+    .gh   { background: #333; color: #fff; }
+
+    .social-card.ig-c:hover { border-color: #e6683c; }
+    .social-card.fb-c:hover { border-color: #1877F2; }
+    .social-card.tw-c:hover { border-color: #1DA1F2; }
+    .social-card.rd-c:hover { border-color: #FF4500; }
+    .social-card.li-c:hover { border-color: #0077B5; }
+    .social-card.gh-c:hover { border-color: #7c3aed; }
+
+    /* ── STATS ── */
+    #stats { background: var(--bg2); max-width: 100%; }
+    .stats-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 0;
+    }
+    .stats-grid img { width: 100%; border-radius: 10px; }
+
+    /* ── CONTACT ── */
+    .contact-wrapper {
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center; gap: 1.5rem;
+    }
+    .contact-wrapper p { color: var(--muted); max-width: 500px; }
+    .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .contact-icon-link {
+      width: 50px; height: 50px; border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; color: var(--muted); font-size: 1.2rem;
+      transition: all .3s;
+    }
+    .contact-icon-link:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.1); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted); font-size: .85rem;
+    }
+    footer span { color: var(--accent); }
+
+    /* ── TYPING ── */
+    .typed-cursor { color: var(--accent2); animation: blink 1s infinite; }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">&lt;Vinay /&gt;</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#social">Connect</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-greeting">👋 Hello, World! I'm</p>
+  <h1 class="hero-name">Vinay Aalla</h1>
+  <p class="hero-role">
+    <span id="typed-text"></span><span class="typed-cursor">|</span>
+  </p>
+  <p class="hero-tagline">
+    Building modern web experiences with <strong>Java, Spring Boot & React</strong>. Turning ideas into elegant, scalable solutions.
+  </p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">View My Work</a>
+    <a href="#contact" class="btn btn-outline">Get In Touch</a>
+  </div>
+  <div class="scroll-indicator"><i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-title">About <span>Me</span></h2>
+  <div class="section-line"></div>
+  <div class="about-grid">
+    <div class="about-img-wrapper">
+      <div class="about-avatar">👨‍💻</div>
+    </div>
+    <div class="about-text">
+      <p>I'm a passionate <strong>Full Stack Developer</strong> who loves crafting clean, efficient, and user-friendly web applications. With a strong foundation in both frontend and backend technologies, I bring ideas to life from concept to deployment.</p>
+      <p>Beyond coding, I'm a content creator who loves sharing knowledge and connecting with the developer community across social platforms.</p>
+      <ul class="about-bullets">
+        <li><i class="fas fa-rocket"></i> Building full-stack apps with React &amp; Spring Boot</li>
+        <li><i class="fas fa-camera"></i> Content creator on Instagram with 443+ followers</li>
+        <li><i class="fas fa-seedling"></i> Exploring Microservices, Docker &amp; Cloud</li>
+        <li><i class="fas fa-coffee"></i> Powered by coffee, curiosity &amp; clean code</li>
+        <li><i class="fas fa-map-marker-alt"></i> Open to exciting collaborations &amp; opportunities</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-inner">
+    <h2 class="section-title">Tech <span>Stack</span></h2>
+    <div class="section-line"></div>
+    <div class="tech-category">
+      <h3>🌐 Frontend</h3>
+      <div class="tech-badges">
+        <div class="badge"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
+        <div class="badge"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
+        <div class="badge"><i class="fab fa-js-square" style="color:#F7DF1E"></i> JavaScript</div>
+        <div class="badge"><i class="fab fa-react" style="color:#61DAFB"></i> React</div>
+      </div>
+    </div>
+    <div class="tech-category">
+      <h3>⚙️ Backend</h3>
+      <div class="tech-badges">
+        <div class="badge"><i class="fab fa-java" style="color:#ED8B00"></i> Java</div>
+        <div class="badge"><i class="fas fa-leaf" style="color:#6DB33F"></i> Spring</div>
+        <div class="badge"><i class="fas fa-bolt" style="color:#6DB33F"></i> Spring Boot</div>
+        <div class="badge"><i class="fas fa-database" style="color:#4479A1"></i> SQL</div>
+      </div>
+    </div>
+    <div class="tech-category">
+      <h3>🧰 Tools &amp; Platforms</h3>
+      <div class="tech-badges">
+        <div class="badge"><i class="fab fa-git-alt" style="color:#F05032"></i> Git</div>
+        <div class="badge"><i class="fab fa-github"></i> GitHub</div>
+        <div class="badge"><i class="fas fa-code" style="color:#007ACC"></i> VS Code</div>
+        <div class="badge"><i class="fas fa-terminal" style="color:#000"></i> IntelliJ IDEA</div>
+        <div class="badge"><i class="fas fa-paper-plane" style="color:#FF6C37"></i> Postman</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <h2 class="section-title">Featured <span>Projects</span></h2>
+  <div class="section-line"></div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-icon">🛒</div>
+      <h3>E-Commerce Platform</h3>
+      <p>A full-stack e-commerce application with product management, cart, and order processing built with Spring Boot &amp; React.</p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">Spring Boot</span>
+        <span class="tag">SQL</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Vinayaalla" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">📋</div>
+      <h3>Task Manager App</h3>
+      <p>A responsive task management application with real-time updates, authentication, and drag-and-drop functionality.</p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">CSS3</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Vinayaalla" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">🔐</div>
+      <h3>Auth &amp; JWT API</h3>
+      <p>A secure RESTful API with JWT authentication, role-based access control, and Spring Security integration.</p>
+      <div class="project-tags">
+        <span class="tag">Java</span>
+        <span class="tag">Spring Security</span>
+        <span class="tag">JWT</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Vinayaalla" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">🌐</div>
+      <h3>Portfolio Website</h3>
+      <p>This very portfolio — a modern, responsive personal website built with pure HTML, CSS &amp; JavaScript. Hosted on GitHub Pages.</p>
+      <div class="project-tags">
+        <span class="tag">HTML5</span>
+        <span class="tag">CSS3</span>
+        <span class="tag">JavaScript</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Vinayaalla/portfolio" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <a href="#"><i class="fas fa-external-link-alt"></i> Live</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL -->
+<section id="social">
+  <h2 class="section-title">Connect &amp; <span>Follow</span></h2>
+  <div class="section-line"></div>
+  <div class="social-grid">
+    <a href="https://www.instagram.com/mr_chowdary___/" target="_blank" class="social-card ig-c">
+      <div class="s-icon ig"><i class="fab fa-instagram"></i></div>
+      <div class="s-info">
+        <small>Instagram</small>
+        <strong>@mr_chowdary___</strong>
+      </div>
+    </a>
+    <a href="https://www.facebook.com/vinay.aalla.5/" target="_blank" class="social-card fb-c">
+      <div class="s-icon fb"><i class="fab fa-facebook-f"></i></div>
+      <div class="s-info">
+        <small>Facebook</small>
+        <strong>Vinay Aalla</strong>
+      </div>
+    </a>
+    <a href="https://x.com/AallaVinay" target="_blank" class="social-card tw-c">
+      <div class="s-icon tw"><i class="fab fa-twitter"></i></div>
+      <div class="s-info">
+        <small>Twitter / X</small>
+        <strong>@AallaVinay</strong>
+      </div>
+    </a>
+    <a href="https://www.reddit.com/user/Crazy_Apricot_979/" target="_blank" class="social-card rd-c">
+      <div class="s-icon rd"><i class="fab fa-reddit-alien"></i></div>
+      <div class="s-info">
+        <small>Reddit</small>
+        <strong>Crazy_Apricot_979</strong>
+      </div>
+    </a>
+    <a href="https://www.linkedin.com/in/vinay-aalla-23-" target="_blank" class="social-card li-c">
+      <div class="s-icon li"><i class="fab fa-linkedin-in"></i></div>
+      <div class="s-info">
+        <small>LinkedIn</small>
+        <strong>Vinay Aalla</strong>
+      </div>
+    </a>
+    <a href="https://github.com/Vinayaalla" target="_blank" class="social-card gh-c">
+      <div class="s-icon gh"><i class="fab fa-github"></i></div>
+      <div class="s-info">
+        <small>GitHub</small>
+        <strong>Vinayaalla</strong>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- GITHUB STATS -->
+<section id="stats">
+  <div class="stats-inner">
+    <h2 class="section-title">GitHub <span>Stats</span></h2>
+    <div class="section-line"></div>
+    <div class="stats-grid">
+      <img src="https://github-readme-stats.vercel.app/api?username=Vinayaalla&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" alt="GitHub Stats" />
+      <img src="https://github-readme-streak-stats.herokuapp.com/?user=Vinayaalla&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
+      <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Vinayaalla&layout=compact&theme=tokyonight&hide_border=true&langs_count=8" alt="Top Languages" />
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="section-title">Get In <span>Touch</span></h2>
+  <div class="section-line"></div>
+  <div class="contact-wrapper">
+    <p>I'm always open to exciting collaborations, interesting projects, and great conversations. Let's build something amazing together!</p>
+    <a href="https://www.linkedin.com/in/vinay-aalla-23-" class="btn btn-primary" target="_blank">
+      <i class="fab fa-linkedin-in"></i> &nbsp;Connect on LinkedIn
+    </a>
+    <div class="contact-links">
+      <a href="https://www.instagram.com/mr_chowdary___/" class="contact-icon-link" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.facebook.com/vinay.aalla.5/" class="contact-icon-link" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://x.com/AallaVinay" class="contact-icon-link" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.reddit.com/user/Crazy_Apricot_979/" class="contact-icon-link" target="_blank" title="Reddit"><i class="fab fa-reddit-alien"></i></a>
+      <a href="https://github.com/Vinayaalla" class="contact-icon-link" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Designed &amp; Built with ❤️ by <span>Vinay Aalla</span> &nbsp;|&nbsp; &copy; 2026</p>
+  <p style="margin-top:.5rem;font-size:.8rem;">"Code is like humor. When you have to explain it, it's bad." — Cory House</p>
+</footer>
+
+<script>
+  // Typing animation
+  const roles = [
+    'Full Stack Developer 🚀',
+    'Java & Spring Boot Dev ☕',
+    'React Frontend Craftsman 🎨',
+    'Content Creator 🎬',
+    'Problem Solver 💡'
+  ];
+  let ri = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typed-text');
+  function type() {
+    const word = roles[ri];
+    if (!deleting) {
+      el.textContent = word.slice(0, ++ci);
+      if (ci === word.length) { deleting = true; setTimeout(type, 1800); return; }
+    } else {
+      el.textContent = word.slice(0, --ci);
+      if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+    }
+    setTimeout(type, deleting ? 50 : 100);
+  }
+  type();
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.project-card, .social-card, .badge').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

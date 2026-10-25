@@ -50,7 +50,11 @@
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 1rem; color: #fff;
-      letter-spacing: -1px; flex-shrink: 0;
+      letter-spacing: -1px; flex-shrink: 0; overflow: hidden;
+    }
+    .nav-logo-icon img {
+      display: block; width: 100%; height: 100%;
+      object-fit: contain; border-radius: inherit;
     }
     .nav-logo-text {
       display: flex; flex-direction: column; line-height: 1.1;
@@ -242,6 +246,57 @@
       transition: color .2s;
     }
     .project-links a:hover { color: var(--accent2); }
+    .project-links .project-details-button {
+      color: var(--accent2); background: transparent; border: 0;
+      font: inherit; font-size: .85rem; cursor: pointer;
+      display: flex; align-items: center; gap: .3rem;
+    }
+    .project-links .project-details-button:hover { color: var(--text); }
+    .project-dialog {
+      width: min(880px, calc(100% - 2rem)); max-height: 88vh;
+      margin: auto; padding: 0; border: 1px solid var(--border);
+      border-radius: 12px; background: var(--bg2); color: var(--text);
+      overflow-y: auto; overscroll-behavior: contain;
+    }
+    body.project-dialog-open {
+      position: fixed; top: var(--project-page-scroll-y);
+      left: 0; right: 0; width: 100%; overflow: hidden;
+    }
+    .project-dialog::backdrop { background: rgba(0, 0, 0, .78); backdrop-filter: blur(5px); }
+    .project-dialog-header {
+      position: sticky; top: 0; z-index: 1;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+      padding: 1.4rem 1.5rem; border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .project-dialog-header h2 { font-size: 1.25rem; line-height: 1.4; }
+    .project-dialog-close {
+      flex: 0 0 38px; width: 38px; height: 38px;
+      border: 1px solid var(--border); border-radius: 6px;
+      background: var(--bg3); color: var(--text); cursor: pointer;
+      font-size: 1.1rem;
+    }
+    .project-dialog-close:hover { border-color: var(--accent2); color: var(--accent2); }
+    .project-dialog-content { padding: 1.5rem; }
+    .project-dialog-content > .project-detail-section {
+      max-width: none; margin: 0 0 1.5rem; padding: 0;
+    }
+    .project-dialog-content > .project-detail-section:last-child { margin-bottom: 0; }
+    .project-detail-section h3 {
+      color: var(--accent2); font-size: 1rem; margin-bottom: .35rem;
+    }
+    .project-detail-section h4 { font-size: .9rem; margin: .65rem 0 .2rem; }
+    .project-detail-section p, .project-detail-section li {
+      color: var(--muted); font-size: .9rem; line-height: 1.7;
+    }
+    .project-detail-section ul, .project-detail-section ol { padding-left: 1.25rem; }
+    .project-detail-section li { padding-left: .2rem; margin: .25rem 0; }
+    .project-detail-stack { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .project-detail-stack span {
+      padding: .35rem .65rem; border: 1px solid var(--border);
+      border-radius: 6px; background: var(--bg3); color: var(--text); font-size: .8rem;
+    }
+    .project-card a, .project-card button { position: relative; z-index: 1; }
 
     /* ── SOCIAL / CONNECT ── */
     .social-grid {
@@ -327,6 +382,7 @@
     @media (max-width: 768px) {
       .about-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
+      .project-dialog-header, .project-dialog-content { padding: 1rem; }
     }
   </style>
 </head>
@@ -336,7 +392,7 @@
 <nav>
   <a href="#hero" class="nav-logo">
     <div class="nav-logo-icon">
-      <img src="vina.png" alt="VA Logo">
+      <img src="vinay.png" alt="" width="38" height="38">
     </div>
     <div class="nav-logo-text">
       <span class="nav-logo-name">Vinay Aalla</span>
@@ -382,7 +438,7 @@
       <p>Beyond coding, I'm a content creator who loves sharing knowledge and connecting with the developer community across social platforms.</p>
       <ul class="about-bullets">
         <li><i class="fas fa-rocket"></i> Building full-stack apps with React &amp; Spring Boot</li>
-        <li><i class="fas fa-camera"></i> Content creator on Instagram with 443+ followers</li>
+        <li><i class="fas fa-camera"></i> Content creator on Instagram with 450+ followers</li>
         <li><i class="fas fa-seedling"></i> Exploring Microservices, Docker &amp; Cloud</li>
         <li><i class="fas fa-coffee"></i> Powered by coffee, curiosity &amp; clean code</li>
         <li><i class="fas fa-map-marker-alt"></i> Open to exciting collaborations &amp; opportunities</li>
@@ -446,6 +502,7 @@
       </div>
       <div class="project-links">
         <a href="https://github.com/Vinayaalla" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <button class="project-details-button" type="button"><i class="fas fa-arrow-up-right-from-square"></i> View details</button>
       </div>
     </div>
     <div class="project-card">
@@ -462,6 +519,7 @@
       </div>
       <div class="project-links">
         <a href="https://github.com/Vinayaalla" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <button class="project-details-button" type="button"><i class="fas fa-arrow-up-right-from-square"></i> View details</button>
       </div>
     </div>
     <div class="project-card">
@@ -479,10 +537,301 @@
       </div>
       <div class="project-links">
         <a href="https://github.com/Vinayaalla" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <button class="project-details-button" type="button"><i class="fas fa-arrow-up-right-from-square"></i> View details</button>
       </div>
     </div>
   </div>
 </section>
+
+<dialog class="project-dialog" id="project-dialog" aria-labelledby="project-dialog-title">
+  <div class="project-dialog-header">
+    <h2 id="project-dialog-title"></h2>
+    <button class="project-dialog-close" type="button" aria-label="Close project details">
+      <i class="fas fa-xmark" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="project-dialog-content" id="project-dialog-content"></div>
+</dialog>
+
+<template id="agriculture-project-details">
+  <section class="project-detail-section">
+    <h3>Project Overview</h3>
+    <p>A smart supply chain platform that tracks agricultural products from farms to consumers using QR codes, providing information about product origin, transportation history, and freshness to improve transparency and consumer trust.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Project Objectives</h3>
+    <ul>
+      <li>Enable farm-to-consumer product traceability.</li>
+      <li>Provide product details through QR codes.</li>
+      <li>Maintain transportation and distribution records.</li>
+      <li>Improve supply chain transparency and data accessibility.</li>
+    </ul>
+  </section>
+  <section class="project-detail-section">
+    <h3>Technologies Used</h3>
+    <h4>HTML5 - Web Page Structure</h4><p>Structures product details, tracking interfaces, forms, and dashboards.</p>
+    <h4>CSS3 - Styling and Responsive Design</h4><p>Creates an attractive, responsive, and user-friendly interface across desktop and mobile devices.</p>
+    <h4>JavaScript - Client-Side Functionality</h4><p>Handles user interactions, form validation, QR code scanning functionality, and communication with backend APIs.</p>
+    <h4>Java - Backend Application Logic</h4><p>Implements business logic, processes product tracking requests, validates data, and manages application operations.</p>
+    <h4>Spring Boot - Backend Framework and REST APIs</h4><p>Develops REST APIs, handles HTTP requests, implements backend services, and connects the application with the database.</p>
+    <h4>MySQL - Database Management</h4><p>Stores and retrieves agricultural product details, origin information, transportation records, and tracking history.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Key Features</h3>
+    <h4>QR Code-Based Product Tracking</h4><p>Each registered product can be associated with a unique QR code. Scanning it retrieves the corresponding product information and available traceability details.</p>
+    <h4>Farm-to-Consumer Traceability</h4><p>The platform maintains a digital representation of a product's journey through the supply chain, from its origin through transportation and distribution.</p>
+    <h4>Product Origin Information</h4><p>Consumers can view available sourcing details, including farm or supplier information and relevant product identifiers.</p>
+    <h4>Transportation History</h4><p>Distribution events such as dispatch, transit, arrival, and delivery can be recorded to show how a product moves through the supply chain.</p>
+    <h4>Freshness Information</h4><p>The application can display recorded harvest dates, packaging dates, expiry dates where applicable, and other freshness-related information. Reliability depends on the accuracy of the underlying records and tracking process.</p>
+    <h4>Centralized Data Management</h4><p>Product information and tracking events are stored in a centralized database for retrieval when users request product details.</p>
+    <h4>User-Friendly Interface</h4><p>The frontend presents product information clearly so users with different levels of technical familiarity can access tracking details.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>System Workflow</h3>
+    <ol>
+      <li><strong>Product Registration:</strong> Enter product information, including its unique identifier and available origin details.</li>
+      <li><strong>QR Code Generation:</strong> Associate a QR code with the registered product or its unique tracking page.</li>
+      <li><strong>Distribution Updates:</strong> Record supply chain events as the product moves between farms, distributors, and retailers.</li>
+      <li><strong>Consumer Scanning:</strong> Scan the QR code using a compatible smartphone camera or scanning interface.</li>
+      <li><strong>Backend Processing:</strong> The frontend sends the product identifier or tracking request to a Spring Boot REST API.</li>
+      <li><strong>Database Retrieval:</strong> The backend queries MySQL for matching product information and recorded tracking history.</li>
+      <li><strong>Information Display:</strong> Present available origin, transportation, and freshness-related details to the consumer.</li>
+    </ol>
+  </section>
+  <section class="project-detail-section">
+    <h3>System Architecture</h3>
+    <p>The application follows a layered web architecture, separating responsibilities to improve maintainability and make future extensions easier.</p>
+    <ul>
+      <li><strong>Presentation Layer:</strong> HTML, CSS, and JavaScript provide the user interface and interactive features.</li>
+      <li><strong>Application Layer:</strong> Java and Spring Boot handle requests, business rules, validation, and API responses.</li>
+      <li><strong>Data Access Layer:</strong> Repository components manage database operations.</li>
+      <li><strong>Database Layer:</strong> MySQL stores product records and supply chain tracking information.</li>
+      <li><strong>QR Code Interface:</strong> QR codes connect a physical product to its digital tracking record.</li>
+    </ul>
+  </section>
+  <section class="project-detail-section">
+    <h3>Data Integrity and Reliability</h3>
+    <p>Reliable traceability depends on accurate and consistent data. Input validation, unique product identifiers, database constraints, and controlled updates can help reduce duplicate or inconsistent records.</p>
+    <p>Access controls can ensure authorized users update distribution information while consumers view permitted details. QR codes provide access to tracking information, but do not independently verify product authenticity or guarantee that recorded information is correct.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Future Enhancements</h3>
+    <ul>
+      <li>GPS-based transportation tracking and route visualization.</li>
+      <li>IoT sensor integration for temperature and storage-condition monitoring.</li>
+      <li>Automated freshness estimation using verified sensor data and product-specific rules.</li>
+      <li>Authentication and role-based access for farmers, distributors, retailers, and administrators.</li>
+      <li>Analytics dashboards for distribution performance and delivery delays.</li>
+      <li>Notifications for delayed shipments or approaching expiry dates.</li>
+      <li>Integration with inventory management and retailer systems.</li>
+      <li>Tamper-evident tracking records to improve accountability.</li>
+    </ul>
+  </section>
+  <section class="project-detail-section">
+    <h3>Project Outcome</h3>
+    <p>The project demonstrates how web development, backend programming, relational database management, and QR code technology can be combined to improve agricultural supply chain transparency. It provides a foundation for making product information more accessible, organizing distribution records, and helping consumers make better-informed purchasing decisions.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Technical Skills Demonstrated</h3>
+    <div class="project-detail-stack">
+      <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Java</span>
+      <span>Spring Boot</span><span>REST API Design</span><span>MySQL</span>
+      <span>QR Code Integration</span><span>Data Validation</span><span>Error Handling</span>
+      <span>Application Architecture</span><span>Full-Stack Development</span>
+    </div>
+  </section>
+</template>
+
+<template id="hashtag-project-details">
+  <section class="project-detail-section">
+    <h3>Project Overview</h3>
+    <p>A hashtag recommendation and filtering system that analyzes uploaded images, collects crowd-generated tags, and ranks hashtags using the HITS algorithm to improve relevance, search accuracy, and content discoverability.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Project Objectives</h3>
+    <ul>
+      <li>Generate relevant hashtags based on image content.</li>
+      <li>Collect user-generated tags through crowd tagging.</li>
+      <li>Rank hashtags based on their relevance and relationships.</li>
+      <li>Improve hashtag search accuracy and content discovery.</li>
+      <li>Reduce irrelevant hashtags and improve search results.</li>
+    </ul>
+  </section>
+  <section class="project-detail-section">
+    <h3>Technologies Used</h3>
+    <h4>HTML5 - Web Page Structure</h4><p>Structures image upload pages, hashtag displays, tagging forms, and search interfaces.</p>
+    <h4>CSS3 - Styling and Responsive Design</h4><p>Creates an attractive, responsive interface for uploading images, viewing hashtags, and displaying ranked results.</p>
+    <h4>JavaScript - Client-Side Functionality</h4><p>Handles image uploads, user-generated tags, form validation, and dynamic display of ranked hashtags.</p>
+    <h4>Java - Backend Application Logic</h4><p>Processes image-related requests, manages crowd-generated tags, and implements hashtag filtering and ranking logic.</p>
+    <h4>Spring Boot - Backend Framework and REST APIs</h4><p>Develops REST APIs, manages application services, processes tagging requests, and connects the frontend with the database.</p>
+    <h4>MySQL - Database Management</h4><p>Stores image references, user-generated tags, hashtag relationships, and data required for ranking and retrieval.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Key Features</h3>
+    <h4>Image-Based Hashtag Filtering</h4><p>Allows users to upload images and associate them with relevant hashtags to improve content categorization and discovery.</p>
+    <h4>Crowd Tagging</h4><p>Collects tags contributed by multiple users to build a broader set of hashtags associated with uploaded images.</p>
+    <h4>HITS Algorithm-Based Ranking</h4><p>Uses the Hyperlink-Induced Topic Search (HITS) algorithm to rank hashtags based on hub and authority scores within a suitably constructed relationship graph.</p>
+    <h4>Hashtag Relevance Analysis</h4><p>Evaluates relationships between images, tags, and associated content to prioritize more relevant hashtags.</p>
+    <h4>Improved Search Accuracy</h4><p>Helps users discover relevant images and content by filtering and ranking hashtags instead of treating every tag equally.</p>
+    <h4>Centralized Tag Management</h4><p>Stores image references, crowd-generated tags, and associated relationships in a structured MySQL database.</p>
+    <h4>User-Friendly Interface</h4><p>Provides an accessible interface for image uploads, tag contributions, and viewing filtered hashtag results.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>System Workflow</h3>
+    <ol>
+      <li><strong>Image Upload:</strong> Users upload an image through the web interface.</li>
+      <li><strong>Crowd Tagging:</strong> Users contribute hashtags relevant to the image.</li>
+      <li><strong>Data Storage:</strong> Image references and submitted tags are stored in MySQL.</li>
+      <li><strong>Relationship Construction:</strong> The system establishes relationships between images, hashtags, and relevant content.</li>
+      <li><strong>HITS Algorithm Execution:</strong> The backend calculates hub and authority scores using the constructed graph.</li>
+      <li><strong>Hashtag Ranking:</strong> Hashtags are ordered according to the ranking strategy and their computed relevance.</li>
+      <li><strong>Results Display:</strong> The frontend displays filtered hashtags to help users discover relevant content.</li>
+    </ol>
+  </section>
+  <section class="project-detail-section">
+    <h3>System Architecture</h3>
+    <p>The application follows a layered architecture that separates user interaction, application logic, ranking, and data management.</p>
+    <ul>
+      <li><strong>Presentation Layer:</strong> HTML, CSS, and JavaScript provide the user interface.</li>
+      <li><strong>Application Layer:</strong> Java and Spring Boot handle business logic and API requests.</li>
+      <li><strong>Ranking Layer:</strong> The HITS algorithm calculates hashtag relevance scores from the relationship graph.</li>
+      <li><strong>Data Access Layer:</strong> Repository components manage database interactions.</li>
+      <li><strong>Database Layer:</strong> MySQL stores image references, tags, and associated relationships.</li>
+    </ul>
+  </section>
+  <section class="project-detail-section">
+    <h3>Data Management and Reliability</h3>
+    <p>Input validation and structured database relationships help maintain consistent image and hashtag records. The system can also incorporate duplicate-tag handling, controlled user submissions, and safeguards against irrelevant or spam-generated tags.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Future Enhancements</h3>
+    <ul>
+      <li>AI-based image recognition for automatic tag suggestions.</li>
+      <li>Advanced spam detection for crowd-generated hashtags.</li>
+      <li>Personalized hashtag recommendations based on user interests.</li>
+      <li>Real-time hashtag trend analysis.</li>
+      <li>Integration with social media APIs where permitted.</li>
+      <li>Optimized ranking for large datasets.</li>
+      <li>Interactive analytics dashboards for hashtag performance.</li>
+    </ul>
+  </section>
+  <section class="project-detail-section">
+    <h3>Project Outcome</h3>
+    <p>The project demonstrates how crowd-generated information, graph-based ranking, and full-stack web technologies can be combined to improve hashtag relevance and content discoverability.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Technical Skills Demonstrated</h3>
+    <div class="project-detail-stack">
+      <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Java</span>
+      <span>Spring Boot</span><span>REST APIs</span><span>MySQL</span><span>HITS Algorithm</span>
+      <span>Data Modeling</span><span>Relationship-Based Ranking</span><span>Full-Stack Development</span>
+    </div>
+  </section>
+</template>
+
+<template id="job-portal-project-details">
+  <section class="project-detail-section">
+    <h3>Project Overview</h3>
+    <p>A full-stack web application that connects recruiters and job seekers through a centralized recruitment platform. It enables recruiters to post jobs and manage applications while candidates can search for opportunities, upload resumes, and track their application status.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Project Objectives</h3>
+    <ul>
+      <li>Connect recruiters and job seekers through a centralized platform.</li>
+      <li>Simplify job posting and recruitment management.</li>
+      <li>Enable candidates to search and apply for relevant jobs.</li>
+      <li>Support resume submission and application tracking.</li>
+      <li>Improve recruitment efficiency and information management.</li>
+    </ul>
+  </section>
+  <section class="project-detail-section">
+    <h3>Technologies Used</h3>
+    <h4>HTML5 - Web Page Structure</h4><p>Structures job listings, application forms, candidate profiles, recruiter dashboards, and job detail pages.</p>
+    <h4>CSS3 - Styling and Responsive Design</h4><p>Creates a clean, responsive, and user-friendly interface for candidates and recruiters across different devices.</p>
+    <h4>JavaScript - Client-Side Functionality</h4><p>Handles user interactions, form validation, job search filters, application actions, and dynamic frontend updates.</p>
+    <h4>React.js - Frontend Development</h4><p>Builds reusable UI components, interactive dashboards, job listing pages, candidate profiles, and recruiter interfaces.</p>
+    <h4>Java - Backend Application Logic</h4><p>Implements business logic, processes job applications, manages job postings, validates user requests, and handles recruitment workflows.</p>
+    <h4>Spring Boot - Backend Framework and REST APIs</h4><p>Develops REST APIs, processes frontend requests, implements application services, and connects the backend with the MySQL database.</p>
+    <h4>MySQL - Database Management</h4><p>Stores candidate profiles, recruiter information, job listings, resume references, and application status records.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Key Features</h3>
+    <h4>Job Search and Discovery</h4><p>Allows candidates to browse available opportunities and search for suitable positions by job title, skills, location, or other supported filters.</p>
+    <h4>Recruiter Job Management</h4><p>Enables recruiters to create job listings with descriptions and requirements, and manage existing postings.</p>
+    <h4>Candidate Registration and Profiles</h4><p>Provides candidates with an interface to maintain personal details, educational qualifications, professional skills, and employment information.</p>
+    <h4>Resume Upload and Management</h4><p>Allows candidates to upload resumes as part of their profiles or job applications, making qualifications available for recruiter review.</p>
+    <h4>Online Job Application</h4><p>Enables candidates to submit applications for available positions through the portal.</p>
+    <h4>Application Status Tracking</h4><p>Allows candidates to monitor application progress through statuses such as Applied, Under Review, Shortlisted, Interview, Selected, or Rejected, depending on the implemented workflow.</p>
+    <h4>Recruiter Application Management</h4><p>Provides recruiters access to applications for their job postings so they can review candidate information and update application statuses.</p>
+    <h4>Centralized Data Management</h4><p>Stores job listings, user profiles, and application records in a structured MySQL database.</p>
+    <h4>User-Friendly Interface</h4><p>Provides an organized interface for navigating job opportunities, managing applications, and accessing recruitment information.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>System Workflow</h3>
+    <ol>
+      <li><strong>User Registration:</strong> Candidates and recruiters register and provide the required information.</li>
+      <li><strong>Authentication:</strong> Registered users access the application through the available login mechanism.</li>
+      <li><strong>Job Posting:</strong> Recruiters create listings with descriptions, qualifications, skills, and other relevant details.</li>
+      <li><strong>Job Search:</strong> Candidates browse available jobs and use supported filters to identify suitable opportunities.</li>
+      <li><strong>Application Submission:</strong> Candidates apply and upload resumes where required.</li>
+      <li><strong>Backend Processing:</strong> React communicates with Spring Boot REST APIs to process requests and execute business logic.</li>
+      <li><strong>Database Operations:</strong> Spring Boot interacts with MySQL to store and retrieve job, candidate, recruiter, and application information.</li>
+      <li><strong>Application Review:</strong> Recruiters review applications and update their progress through the recruitment workflow.</li>
+      <li><strong>Status Tracking:</strong> Candidates view the latest available application status in their dashboard.</li>
+    </ol>
+  </section>
+  <section class="project-detail-section">
+    <h3>System Architecture</h3>
+    <p>The application follows a layered full-stack architecture that separates presentation, API handling, business logic, data access, and storage.</p>
+    <ul>
+      <li><strong>Presentation Layer:</strong> HTML, CSS, JavaScript, and React.js provide the interactive user interface.</li>
+      <li><strong>API Layer:</strong> Spring Boot REST controllers receive and process frontend requests.</li>
+      <li><strong>Business Logic Layer:</strong> Java service classes handle job management, application processing, and recruitment operations.</li>
+      <li><strong>Data Access Layer:</strong> Repository components manage database queries and persistence operations.</li>
+      <li><strong>Database Layer:</strong> MySQL stores user information, job postings, resumes or resume references, and application records.</li>
+    </ul>
+    <p>This separation improves code organization, maintainability, and future scalability.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Data Management and Reliability</h3>
+    <p>Input validation, database constraints, and structured relationships can help maintain consistent recruitment records. Additional security measures can include secure password handling, role-based access for candidates and recruiters, and restrictions on unauthorized access to or modification of application data.</p>
+    <p>Resume files should be handled with appropriate file validation and access controls to protect candidate information.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Future Enhancements</h3>
+    <ul>
+      <li>Secure authentication with Spring Security and JWT.</li>
+      <li>Role-based dashboards for candidates, recruiters, and administrators.</li>
+      <li>Advanced job search with salary, location, experience, and employment-type filters.</li>
+      <li>Automated email notifications for application updates.</li>
+      <li>Resume parsing and skill extraction.</li>
+      <li>Job recommendations based on candidate profiles.</li>
+      <li>Interview scheduling and recruitment calendar integration.</li>
+      <li>Analytics dashboards for recruitment performance.</li>
+      <li>Cloud deployment and secure resume storage.</li>
+      <li>Pagination and optimized database queries for large job listings.</li>
+    </ul>
+  </section>
+  <section class="project-detail-section">
+    <h3>Project Outcome</h3>
+    <p>The project demonstrates how frontend technologies, Java-based backend development, REST APIs, and relational database management can be integrated to build a recruitment platform. It provides a foundation for simplifying job discovery, organizing applications, and improving communication between candidates and recruiters.</p>
+  </section>
+  <section class="project-detail-section">
+    <h3>Technical Skills Demonstrated</h3>
+    <div class="project-detail-stack">
+      <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>React.js</span>
+      <span>Java</span><span>Spring Boot</span><span>REST APIs</span><span>MySQL</span>
+      <span>Job and Application Workflows</span><span>Form Validation</span>
+      <span>Data Processing</span><span>Error Handling</span>
+      <span>Component-Based UI</span><span>Layered Architecture</span><span>Full-Stack Development</span>
+    </div>
+  </section>
+  <section class="project-detail-section">
+    <h3>GitHub Repository</h3>
+    <p>Explore the source code and project implementation on GitHub:</p>
+    <p><a href="https://github.com/Vinayaalla" target="_blank" rel="noopener noreferrer">https://github.com/Vinayaalla</a></p>
+  </section>
+</template>
 
 
 <!-- RESUME DOWNLOAD -->
@@ -641,6 +990,50 @@
     setTimeout(type, deleting ? 50 : 100);
   }
   type();
+
+  const projectDialog = document.getElementById('project-dialog');
+  const projectDialogTitle = document.getElementById('project-dialog-title');
+  const projectDialogContent = document.getElementById('project-dialog-content');
+  let projectPageScrollY = 0;
+  const releaseProjectPage = () => {
+    document.body.classList.remove('project-dialog-open');
+    document.body.style.removeProperty('--project-page-scroll-y');
+    window.scrollTo(0, projectPageScrollY);
+    requestAnimationFrame(() => window.scrollTo(0, projectPageScrollY));
+  };
+  const closeProjectDetails = () => {
+    if (projectDialog.open) projectDialog.close();
+    releaseProjectPage();
+  };
+  const projectTemplates = [
+    'agriculture-project-details',
+    'hashtag-project-details',
+    'job-portal-project-details'
+  ];
+
+  document.querySelectorAll('.project-card').forEach((card, index) => {
+    const openProjectDetails = () => {
+      const template = document.getElementById(projectTemplates[index]);
+      projectDialogTitle.textContent = card.querySelector('h3').textContent;
+      projectDialogContent.replaceChildren(template.content.cloneNode(true));
+      projectPageScrollY = window.scrollY;
+      document.body.style.setProperty('--project-page-scroll-y', `-${projectPageScrollY}px`);
+      document.body.classList.add('project-dialog-open');
+      projectDialog.showModal();
+    };
+
+    card.querySelector('.project-details-button').addEventListener('click', openProjectDetails);
+  });
+
+  projectDialog.querySelector('.project-dialog-close').addEventListener('click', closeProjectDetails);
+  projectDialog.addEventListener('click', (event) => {
+    if (event.target === projectDialog) closeProjectDetails();
+  });
+  projectDialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closeProjectDetails();
+  });
+  projectDialog.addEventListener('close', releaseProjectPage);
 
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {

@@ -355,6 +355,20 @@
       align-items: center; text-align: center; gap: 1.5rem;
     }
     .contact-wrapper p { color: var(--muted); max-width: 500px; }
+    .contact-form {
+      width: min(100%, 620px); display: grid; gap: 1rem; text-align: left;
+      padding: 1.5rem; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--bg2);
+    }
+    .contact-form label { display: grid; gap: .4rem; color: var(--text); font-size: .88rem; font-weight: 600; }
+    .contact-form input, .contact-form textarea {
+      width: 100%; padding: .8rem .9rem; border: 1px solid var(--border);
+      border-radius: 6px; background: var(--bg); color: var(--text); font: inherit;
+    }
+    .contact-form input:focus, .contact-form textarea:focus { outline: 2px solid var(--accent2); outline-offset: 1px; }
+    .contact-form textarea { min-height: 140px; resize: vertical; }
+    .contact-form button { justify-self: start; }
+    .contact-form-status { min-height: 1.5em; color: var(--accent2); font-size: .9rem; }
     .contact-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
     .contact-links { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
     .contact-icon-link {
@@ -942,6 +956,19 @@
   <div class="section-line"></div>
   <div class="contact-wrapper">
     <p>I'm always open to exciting collaborations, interesting projects, and great conversations. Let's build something amazing together!</p>
+    <form class="contact-form" id="contact-form">
+      <label for="contact-name">Name
+        <input id="contact-name" name="name" autocomplete="name" maxlength="100" required>
+      </label>
+      <label for="contact-email">Email
+        <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+      </label>
+      <label for="contact-message">Message
+        <textarea id="contact-message" name="message" maxlength="4000" required></textarea>
+      </label>
+      <button class="btn btn-primary" type="submit"><i class="fas fa-paper-plane" aria-hidden="true"></i> Send Message</button>
+      <p class="contact-form-status" id="contact-form-status" role="status" aria-live="polite"></p>
+    </form>
     <div class="contact-btns">
       <a href="https://www.linkedin.com/in/vinay-aalla-23-" class="btn btn-primary" target="_blank">
         <i class="fab fa-linkedin-in"></i> Connect on LinkedIn
@@ -1011,9 +1038,59 @@
     'job-portal-project-details'
   ];
 
+  fetch('/api/projects')
+    .then((response) => {
+      if (!response.ok) throw new Error('Could not load projects');
+      return response.json();
+    })
+    .then((projects) => {
+      document.querySelectorAll('.project-card').forEach((card, index) => {
+        const project = projects[index];
+        if (!project) return;
+        card.dataset.detailsTemplateId = project.detailsTemplateId;
+        card.querySelector('.project-icon').textContent = project.icon;
+        card.querySelector('h3').textContent = project.title;
+        card.querySelector('p').textContent = project.description;
+        const tags = card.querySelector('.project-tags');
+        tags.replaceChildren(...project.technologies.map((technology) => {
+          const tag = document.createElement('span');
+          tag.className = 'tag';
+          tag.textContent = technology;
+          return tag;
+        }));
+        card.querySelector('.project-links a').href = project.repositoryUrl;
+      });
+    })
+    .catch(() => {});
+
+  const contactForm = document.getElementById('contact-form');
+  const contactFormStatus = document.getElementById('contact-form-status');
+  contactForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    contactFormStatus.textContent = 'Sending your message...';
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(contactForm)))
+      });
+      if (!response.ok) throw new Error('The message could not be sent. Please try again.');
+      contactForm.reset();
+      contactFormStatus.textContent = 'Thanks, your message has been received.';
+    } catch (error) {
+      contactFormStatus.textContent = error.message;
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
   document.querySelectorAll('.project-card').forEach((card, index) => {
     const openProjectDetails = () => {
-      const template = document.getElementById(projectTemplates[index]);
+      const templateId = card.dataset.detailsTemplateId || projectTemplates[index];
+      const template = document.getElementById(templateId);
       projectDialogTitle.textContent = card.querySelector('h3').textContent;
       projectDialogContent.replaceChildren(template.content.cloneNode(true));
       projectPageScrollY = window.scrollY;
